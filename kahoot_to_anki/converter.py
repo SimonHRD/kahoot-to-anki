@@ -14,7 +14,6 @@ logging.basicConfig(level=logging.INFO)
 # Constants
 DEFAULT_INPUT_DIRECTORY = "./data"
 DEFAULT_OUTPUT_DIRECTORY = "./"
-DEFAULT_CSV_OPTION = False
 DEFAULT_DECK_TITLE = "Kahoot"
 KAHOOT_EXCEL_SHEET_NAME_RAW_DATA = "RawReportData Data"
 
@@ -64,9 +63,8 @@ def get_commandline_arguments() -> tuple:
     )
     parser.add_argument(
         "--csv",
-        default=DEFAULT_CSV_OPTION,
-        help=f"Generate a CSV file with the question data. Default: {DEFAULT_CSV_OPTION}",
-        type=bool,
+        action="store_true",
+        help="Generate a CSV file with the question data.",
     )
     parser.add_argument(
         "-t",
