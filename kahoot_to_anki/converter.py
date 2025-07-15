@@ -73,8 +73,9 @@ def get_commandline_arguments() -> CLIArgs:
     )
     parser.add_argument(
         "--csv",
-        action="store_true",
-        help="Generate a CSV file with the question data.",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Enable or disable CSV export of question data (default: disabled).",
     )
     parser.add_argument(
         "-t",

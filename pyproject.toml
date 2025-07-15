@@ -9,7 +9,7 @@ description = "CLI tool to convert Kahoot quiz reports into Anki flashcards"
 authors = [{ name = "Simon Hardmeier" }]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 dependencies = [
     "genanki",
     "pandas",
