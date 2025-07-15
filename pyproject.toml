@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kahoot-to-anki"
+version = "1.0.0"
+description = "CLI tool to convert Kahoot quiz reports into Anki flashcards"
+authors = [{ name = "Simon Hardmeier" }]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "genanki",
+    "pandas",
+    "openpyxl"
+]
+
+[project.scripts]
+kahoot-to-anki = "kahoot_to_anki.converter:main"
+
+[tool.setuptools.packages.find]
+where = ["."]

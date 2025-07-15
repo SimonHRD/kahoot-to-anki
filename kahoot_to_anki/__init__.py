@@ -1,0 +1,1 @@
+"""CLI tool to convert Kahoot quiz reports into Anki flashcards."""
