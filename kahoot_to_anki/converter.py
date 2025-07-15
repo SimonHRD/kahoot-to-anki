@@ -3,6 +3,8 @@ import argparse
 import logging
 import os
 import glob
+from typing import Iterator, Optional
+from dataclasses import dataclass
 
 # Third-party library imports
 import genanki
@@ -17,32 +19,40 @@ DEFAULT_OUTPUT_DIRECTORY = "./"
 DEFAULT_DECK_TITLE = "Kahoot"
 KAHOOT_EXCEL_SHEET_NAME_RAW_DATA = "RawReportData Data"
 
+# Dataclass to hold CLI arguments
+@dataclass
+class CLIArgs:
+    input_path: str
+    output_path: str
+    export_csv: bool
+    deck_title: str
 
-def main():
+
+def main() -> None:
     # Check command line arguments
-    inp, out, csv, title = get_commandline_arguments()
+    args = get_commandline_arguments()
 
-    validation(inp, out)
+    validation(args.input_path, args.output_path)
 
-    df = get_questions(inp)
+    df = get_questions(args.input_path)
 
-    if csv:
+    if args.export_csv:
         df.to_csv(
-            os.path.join(out, "kahoot.csv"),
+            os.path.join(args.output_path, "kahoot.csv"),
             sep=";",
             index=False,
             encoding="utf-8-sig",
         )
+        
+    make_anki(df, args.output_path, args.deck_title)
 
-    make_anki(df, out, title)
 
-
-def get_commandline_arguments() -> tuple:
+def get_commandline_arguments() -> CLIArgs:
     """
-    Parses the command line arguments and returns a tuple with the input path, output path, CSV option, and deck title.
+    Parses the command line arguments and returns a CLIArgs dataclass instance.
 
-    :return: A tuple with the input path, the output path, the csv and the title of the anki deck
-    :rtype: tuple
+    :return: A CLIArgs dataclass instance
+    :rtype: CLIArgs
     """
     parser = argparse.ArgumentParser(description="Create Anki Deck from Kahoot answer")
     parser.add_argument(
@@ -76,8 +86,12 @@ def get_commandline_arguments() -> tuple:
     )
     args = parser.parse_args()
 
-    # return absolute paths
-    return os.path.abspath(args.inp), os.path.abspath(args.out), args.csv, args.title
+    return CLIArgs(
+        input_path=os.path.abspath(args.inp),
+        output_path=os.path.abspath(args.out),
+        export_csv=args.csv,
+        deck_title=args.title
+    )
 
 
 def validation(input_directory: str, output_directory: str) -> None:
@@ -131,7 +145,7 @@ def get_questions(input_directory: str) -> pd.DataFrame:
     :rtype: pd.DataFrame
     """
 
-    def get_excels(path):
+    def get_excels(path: str) -> Iterator[str]:
         """
         Returns a list with all Excels in the given path
         :param path: the path to an Excel file or a directory with Excel files
@@ -143,7 +157,7 @@ def get_questions(input_directory: str) -> pd.DataFrame:
             yield from glob.glob(os.path.join(input_directory, "*.xlsx"))
             return [f for f in glob.glob(os.path.join(path, "*.xlsx"))]
 
-    def get_excel_data(excel_file: str) -> pd.DataFrame:
+    def get_excel_data(excel_file: str) -> Optional[pd.DataFrame]:
         """
         Returns a pd.DataFrame with the kahoot raw data
         :param excel_file: an Excel file with Kahoot raw data
