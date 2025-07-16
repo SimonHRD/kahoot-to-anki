@@ -1,5 +1,6 @@
 import os
 import logging
+import sys
 
 from kahoot_to_anki.cli import get_commandline_arguments, validation
 from kahoot_to_anki.processing import get_questions, make_anki
@@ -15,6 +16,10 @@ def main() -> None:
     validation(args.input_path, args.output_path)
 
     df = get_questions(input_directory=args.input_path, sheet_name=args.sheet)
+    
+    if df.empty:
+        logging.warning("No Kahoot questions found to process. Exiting.")
+        sys.exit(0)
 
     if args.export_csv:
         df.to_csv(
