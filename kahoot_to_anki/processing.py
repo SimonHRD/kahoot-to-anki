@@ -83,9 +83,11 @@ def df_processing(data: pd.DataFrame) -> pd.DataFrame:
     :param data: DataFrame with Kahoot question data
     :return: Processed DataFrame
     """
+    if data.empty:
+        return pd.DataFrame(columns=["Question", "Possible Answers", "Correct Answers"])
+    
     # delete duplicated questions
     data = data.drop_duplicates(subset=["Question Number"])
-
     data = data.fillna("")
 
     data["Possible Answers"] = data[
