@@ -1,1 +1,1 @@
-"""CLI tool to convert Kahoot quiz reports into Anki flashcards."""
+__version__ = "1.1.0"
