@@ -5,6 +5,9 @@ import logging
 import os
 import glob
 
+from kahoot_to_anki import __version__
+
+
 # Constants
 DEFAULT_INPUT_DIRECTORY = "./data"
 DEFAULT_OUTPUT_DIRECTORY = "./"
@@ -64,6 +67,12 @@ def get_commandline_arguments() -> CLIArgs:
         help="Name of the Anki deck to be created. "
         f"If not specified, the default deck name '{DEFAULT_DECK_TITLE}' will be used.",
         type=str,
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {__version__}",
+        help="Show the version number and exit.",
     )
     args = parser.parse_args()
 

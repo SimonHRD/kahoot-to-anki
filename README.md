@@ -55,6 +55,7 @@ All valid Excel files in the directory will be processed.
 | `--sheet`            | The Excel Sheet with the raw Kahoot quiz data (default: `RawReportData Data`)  |    
 | `--csv`, `--no-csv`  | Enable or disable CSV export of the questions (default: disabled)              |
 | `-t`, `--title`      | Title of the generated Anki deck (default: `"Kahoot"`)                         |
+| `--version`          | Show the version of the installed kahoot-to-anki package                       |
 
 
 ## Example
