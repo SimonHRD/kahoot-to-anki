@@ -90,7 +90,7 @@ def df_processing(data: pd.DataFrame) -> pd.DataFrame:
 
     data["Possible Answers"] = data[
         ["Answer 1", "Answer 2", "Answer 3", "Answer 4", "Answer 5", "Answer 6"]
-    ].agg("<br>".join, axis=1)
+    ].astype(str).agg("<br>".join, axis=1)
 
     # keep only needed columns
     data = data[["Question", "Possible Answers", "Correct Answers"]]
