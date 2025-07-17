@@ -1,10 +1,11 @@
 # kahoot-to-anki
 [![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](#installation)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![PyPI](https://img.shields.io/pypi/v/kahoot-to-anki.svg)
 
 <br>
 
-**kahoot-to-anki** is a command‑line tool that converts exported Kahoot quiz reports (Excel Files) into Anki flashcard decks (.apkg format).<br>
+**kahoot-to-anki** is a command-line tool that converts exported Kahoot quiz reports (`.xlsx` files) into Anki flashcard decks (`.apkg` format).<br>
 Designed for educators, students, and any self-learners to easily turn quiz results into effective spaced‑repetition decks.
 
 ## Installation & Usage
@@ -22,6 +23,9 @@ kahoot-to-anki --inp "./exports" --out "./data" --csv
 ```
 
 ### Option 2: Run with Docker
+You can run **kahoot-to-anki** in a Docker container in three ways:
+
+#### A) Build Image from Source Code (Clone Repo)
 ```
 # Clone Repository
 git clone https://github.com/SimonHRD/kahoot-to-anki.git
@@ -36,12 +40,54 @@ docker build -t kahoot-to-anki .
 docker run --rm kahoot-to-anki --help
 
 # Run with local data
-docker run --rm -v "$(pwd)/data:/app/data" kahoot-to-anki --out "./data" --csv
+docker run --rm -v "$(pwd)/data:/app/data" kahoot-to-anki \
+  --inp "./data" --out "./data" --csv
 ```
 
 On PowerShell:
 ```
-docker run --rm -v ${PWD}\data:/app/data kahoot-to-anki --out "./data" --csv
+docker run --rm -v ${PWD}\data:/app/data kahoot-to-anki \
+  --inp "./data" --out "./data" --csv
+```
+
+#### B) Use a Minimal Dockerfile That Installs from PyPI
+It is not needed to clone the repository, you can just create a minimal Dockerfile:
+```Dockerfile
+FROM python:3.13-slim
+
+WORKDIR /app
+RUN pip install kahoot-to-anki
+ENTRYPOINT ["kahoot-to-anki"]
+```
+Then run:
+```bash
+# Build the image
+docker build -t kahoot-to-anki-pypi .
+
+# Run the tool
+docker run --rm -v "$(pwd)/data:/app/data" kahoot-to-anki-pypi \
+  --inp "./data" --out "./data" --csv
+```
+
+On PowerShell:
+```
+docker run --rm -v ${PWD}\data:/app/data kahoot-to-anki-pypi \
+  --inp "./data" --out "./data" --csv
+```
+
+#### C) Run Without a Dockerfile (Install from PyPI at Runtime)
+If you want to avoid writing a Dockerfile, just run the CLI directly from a fresh Python container. This method downloads everything at runtime in a temporary container. No files or installed packages will persist after the container exits.
+
+```bash
+docker run --rm -v "$(pwd)/data:/app/data" python:3.13-slim \
+  sh -c "pip install kahoot-to-anki && kahoot-to-anki --out ./data --csv"
+```
+
+On PowerShell:
+```
+docker run --rm -v ${PWD}\data:/app/data python:3.13-slim `
+  sh -c "pip install kahoot-to-anki && kahoot-to-anki --out ./data --csv"
+
 ```
 
 ## CLI Arguments
