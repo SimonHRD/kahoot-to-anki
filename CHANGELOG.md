@@ -1,4 +1,14 @@
 # Changelog
+## [1.2.0] - 2025-07-17
+### Added
+- `--version` CLI flag
+- Unit tests for CLI and processing modules
+- CHANGELOG.md
+
+### Fixed
+- Crash when answers contain numbers (string conversion)
+- Crash when processing empty Excel files
+
 ## [1.1.0] – 2025‑07‑16
 - Added `--sheet` CLI argument
 - Refactored into `cli.py`, `processing.py`, `main.py`
