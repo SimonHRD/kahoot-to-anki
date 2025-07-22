@@ -1,4 +1,8 @@
 # Changelog
+## [1.2.1] - 2025-07-22
+### Fixed
+- Crash when input contains special characters like `<`, `&`, or `"` by HTML-escaping all string values
+
 ## [1.2.0] - 2025-07-17
 ### Added
 - `--version` CLI flag
