@@ -3,6 +3,7 @@ import logging
 import os
 import glob
 from typing import Iterator, Optional
+import html
 
 # Third-party library imports
 import genanki
@@ -89,6 +90,9 @@ def df_processing(data: pd.DataFrame) -> pd.DataFrame:
     # delete duplicated questions
     data = data.drop_duplicates(subset=["Question Number"])
     data = data.fillna("")
+    
+    # HTML-encode special chars
+    data = data.apply(lambda col: col.map(lambda x: html.escape(x) if isinstance(x, str) else x))
 
     data["Possible Answers"] = data[
         ["Answer 1", "Answer 2", "Answer 3", "Answer 4", "Answer 5", "Answer 6"]
@@ -96,7 +100,7 @@ def df_processing(data: pd.DataFrame) -> pd.DataFrame:
 
     # keep only needed columns
     data = data[["Question", "Possible Answers", "Correct Answers"]]
-
+    
     return data
 
 
