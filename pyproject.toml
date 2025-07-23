@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kahoot-to-anki"
-version = "1.2.1"
+dynamic = ["version"]
 description = "CLI tool to convert Kahoot quiz reports into Anki flashcards"
 authors = [{ name = "Simon Hardmeier" }]
 license = "MIT"
